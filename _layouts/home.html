@@ -49,19 +49,8 @@ layout: default
       <h2 class="section-title">开源项目</h2>
       <a href="{{ '/projects/' | relative_url }}" class="section-link">查看全部 →</a>
     </div>
-    <div class="projects-grid">
-      {% for project in site.projects limit:3 %}
-        <a href="{{ project.url | relative_url }}" class="project-card">
-          <div class="project-card-icon">{{ project.icon | default: '📦' }}</div>
-          <h3 class="project-card-title">{{ project.title }}</h3>
-          <p class="project-card-desc">{{ project.description }}</p>
-          <div class="project-card-meta">
-            <span>{{ project.language }}</span>
-          </div>
-        </a>
-      {% else %}
-        <p class="empty-state">项目展示即将上线...</p>
-      {% endfor %}
-    </div>
+    <div class="projects-grid" data-projects="3"></div>
   </div>
 </section>
+
+<script src="{{ '/assets/js/projects.js' | relative_url }}"></script>
