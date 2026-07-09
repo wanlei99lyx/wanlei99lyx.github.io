@@ -1,0 +1,67 @@
+---
+layout: default
+---
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="hero-label">{{ site.description }}</p>
+      <h1 class="hero-title">
+        <span class="gradient-text">{{ site.title }}</span>
+      </h1>
+      <p class="hero-subtitle">
+        探索 AI 前沿技术，分享开发实践，构建知识体系
+      </p>
+      <div class="hero-actions">
+        <a href="{{ '/blog/' | relative_url }}" class="btn btn-primary">
+          阅读博客
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="{{ '/about/' | relative_url }}" class="btn btn-ghost">
+          关于我
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-grid"></div>
+</div>
+
+<section class="section section-featured">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">精选文章</h2>
+      <a href="{{ '/blog/' | relative_url }}" class="section-link">查看全部 →</a>
+    </div>
+    <div class="posts-grid">
+      {% for post in site.posts limit:6 %}
+        {% include post-card.html post=post %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-projects">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">开源项目</h2>
+      <a href="{{ '/projects/' | relative_url }}" class="section-link">查看全部 →</a>
+    </div>
+    <div class="projects-grid">
+      {% for project in site.projects limit:3 %}
+        <a href="{{ project.url | relative_url }}" class="project-card">
+          <div class="project-card-icon">{{ project.icon | default: '📦' }}</div>
+          <h3 class="project-card-title">{{ project.title }}</h3>
+          <p class="project-card-desc">{{ project.description }}</p>
+          <div class="project-card-meta">
+            <span>{{ project.language }}</span>
+          </div>
+        </a>
+      {% else %}
+        <p class="empty-state">项目展示即将上线...</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>

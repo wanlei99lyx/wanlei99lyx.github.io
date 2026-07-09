@@ -1,0 +1,59 @@
+title: Wlei的Ai技术分享
+description: 分享AI技术、开发实践与开源项目 — 让AI学习更简单
+author: Wlei
+email:
+avatar: /assets/images/avatar.png
+
+# SEO
+lang: zh-CN
+timezone: Asia/Shanghai
+url: "https://wlei.github.io"
+baseurl: ""
+
+# Social
+github_username: Wlei
+
+# Build
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:title/
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Wlei"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "page"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude
+exclude:
+  - README.md
+  - DESIGN.md
+  - PRODUCT.md
+  - node_modules
+  - Gemfile
+  - Gemfile.lock
