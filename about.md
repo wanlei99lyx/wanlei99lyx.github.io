@@ -24,5 +24,5 @@ title: 关于我
 
 ### 联系我
 
-- GitHub: [@Wlei](https://github.com/Wlei)
+- GitHub: [@wanlei99lyx](https://github.com/wanlei99lyx)
 - 欢迎在文章评论区交流讨论！
