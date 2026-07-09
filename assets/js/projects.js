@@ -1,4 +1,5 @@
 (function() {
+  const username = 'wanlei99lyx';
   const excludeRepos = ['wanlei99lyx.github.io'];
 
   function renderRepo(repo) {
@@ -19,7 +20,7 @@
   function loadProjects(container, limit) {
     if (!container) return;
 
-    fetch('/assets/data/repos.json')
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=30&type=public`)
       .then(res => res.json())
       .then(repos => {
         if (!Array.isArray(repos)) return;
@@ -33,6 +34,7 @@
       .catch(() => {
         container.innerHTML = '<p class="empty-state">暂无项目展示</p>';
       });
+
   }
 
   document.querySelectorAll('[data-projects]').forEach(el => {
