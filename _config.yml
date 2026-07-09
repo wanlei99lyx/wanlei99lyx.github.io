@@ -44,5 +44,6 @@ exclude:
   - DESIGN.md
   - PRODUCT.md
   - node_modules
+  - vendor
   - Gemfile
   - Gemfile.lock

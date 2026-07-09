@@ -27,6 +27,8 @@ jobs:
           gem install jekyll jekyll-feed jekyll-seo-tag jekyll-sitemap
       - name: Build site
         run: jekyll build --trace
+        env:
+          JEKYLL_ENV: production
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
