@@ -1,8 +1,5 @@
 (function() {
-  const username = 'wanlei99lyx';
-
-  // Exclude repos that shouldn't appear
-  const excludeRepos = ['wanlei99lyx.github.io', username.toLowerCase() + '.github.io'];
+  const excludeRepos = ['wanlei99lyx.github.io'];
 
   function renderRepo(repo) {
     return `
@@ -22,7 +19,7 @@
   function loadProjects(container, limit) {
     if (!container) return;
 
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=30`)
+    fetch('/assets/data/repos.json')
       .then(res => res.json())
       .then(repos => {
         if (!Array.isArray(repos)) return;
@@ -34,11 +31,10 @@
         container.innerHTML = list.map(renderRepo).join('');
       })
       .catch(() => {
-        container.innerHTML = '<p class="empty-state">无法加载项目数据</p>';
+        container.innerHTML = '<p class="empty-state">暂无项目展示</p>';
       });
   }
 
-  // Auto-init — respect data-projects attribute as limit
   document.querySelectorAll('[data-projects]').forEach(el => {
     const limit = parseInt(el.getAttribute('data-projects')) || 0;
     loadProjects(el, limit || undefined);

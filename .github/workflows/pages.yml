@@ -18,6 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Fetch GitHub repos data
+        run: |
+          mkdir -p assets/data
+          curl -s "https://api.github.com/users/wanlei99lyx/repos?sort=updated&per_page=30&type=public" -o assets/data/repos.json
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
