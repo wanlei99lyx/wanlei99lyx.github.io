@@ -17,6 +17,7 @@ github_username: wanlei99lyx
 markdown: kramdown
 highlighter: rouge
 permalink: /:year/:month/:title/
+future: true
 
 # Defaults
 defaults:

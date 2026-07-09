@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "别再混淆！一文理清 Agent、MCP、Skill 等 AI 核心概念"
-date: 2026-07-09 18:00:00 +0800
+date: 2026-07-09 15:30:00 +0800
 categories: [AI, 概念科普]
 tags: [AI Agent, MCP, Skill, Claude Code, AI架构]
 ---
