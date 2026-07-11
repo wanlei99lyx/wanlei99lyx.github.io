@@ -86,6 +86,36 @@ a:hover { color: var(--color-primary); }
   pointer-events: none;
 }
 
+/* === Star Field === */
+#starField {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.15; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.15); }
+}
+
+/* Shorter stars (bright ones) get a second twinkle */
+.star[style*="box-shadow"] {
+  animation-duration: 4s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star { animation: none !important; }
+}
+
 /* === Container === */
 .container {
   width: 100%;
