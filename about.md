@@ -11,7 +11,7 @@ title: 关于我
 
 - **机器学习/深度学习**: PyTorch, TensorFlow, Transformers
 - **大模型应用**: GPT API, LangChain, RAG
-- **开发工具**: Python, JavaScript, Git
+- **开发工具**: Python, Java, Git
 - **开源**: GitHub 活跃贡献者
 
 ### 关于这个博客
