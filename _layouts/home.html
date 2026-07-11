@@ -35,9 +35,47 @@ layout: default
       <h2 class="section-title">精选文章</h2>
       <a href="{{ '/blog/' | relative_url }}" class="section-link">查看全部 →</a>
     </div>
-    <div class="posts-grid">
+    <div class="featured-list">
       {% for post in site.posts limit:6 %}
-        {% include post-card.html post=post %}
+        {% assign mod = forloop.index0 | modulo: 2 %}
+        {% assign post_content = post.content %}
+        {% assign img_found = false %}
+        {% if post_content contains '![](/assets/images/posts/' %}
+          {% assign img_parts = post_content | split: '![](/assets/images/posts/' %}
+          {% assign img_rest = img_parts[1] | split: ')' | first %}
+          {% assign post_img = '/assets/images/posts/' | append: img_rest %}
+          {% assign img_found = true %}
+        {% endif %}
+        <article class="featured-row{% if mod == 0 %} row-alt-a{% else %} row-alt-b{% endif %}">
+          <div class="featured-visual">
+            {% if img_found %}
+              <img src="{{ post_img | relative_url }}" alt="" loading="lazy" class="featured-img">
+            {% else %}
+              <div class="featured-visual-fallback">
+                <span class="featured-visual-icon">{{ post.categories | first | slice: 0 }}</span>
+              </div>
+            {% endif %}
+          </div>
+          <div class="featured-body">
+            <div class="post-card-meta">
+              <time datetime="{{ post.date | date_to_xmlschema }}">
+                {{ post.date | date: "%Y-%m-%d" }}
+              </time>
+              {% if post.categories.size > 0 %}
+                <span class="post-card-category">{{ post.categories | first }}</span>
+              {% endif %}
+            </div>
+            <h3 class="featured-title">
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            <p class="featured-excerpt">{{ post.excerpt | strip_html | truncate: 150 }}</p>
+            <div class="featured-tags">
+              {% for tag in post.tags limit:3 %}
+                <span class="tag tag-sm">#{{ tag }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </article>
       {% endfor %}
     </div>
   </div>
