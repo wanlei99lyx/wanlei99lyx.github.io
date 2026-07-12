@@ -59,6 +59,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--color-bg);
 }
 
 body {
@@ -66,7 +67,6 @@ body {
   font-size: clamp(0.875rem, 1vw + 0.5rem, 1rem);
   line-height: 1.75;
   color: var(--color-ink);
-  background: var(--color-bg);
   min-height: 100vh;
 }
 
