@@ -22,7 +22,7 @@
 <body>
   <div class="noise"></div>
   <div id="starField"></div>
-  <canvas id="earthCanvas"></canvas>
+  {% if page.layout == 'home' %}<canvas id="earthCanvas"></canvas>{% endif %}
   <div class="page">
     {% include header.html %}
     <main class="main" role="main">
@@ -32,8 +32,10 @@
   </div>
   <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/stars.js' | relative_url }}"></script>
+  {% if page.layout == 'home' %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="{{ '/assets/js/earth.js' | relative_url }}"></script>
+  {% endif %}
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
