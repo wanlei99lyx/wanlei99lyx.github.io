@@ -697,8 +697,8 @@ a:hover { color: var(--color-primary); }
 }
 
 /* utterances dark theme overrides */
-.utterances {
-  max-width: 100% !important;
+.giscus {
+  width: 100%;
 }
 
 .post-nav {
