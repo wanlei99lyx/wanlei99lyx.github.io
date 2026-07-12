@@ -921,21 +921,6 @@ a:hover { color: var(--color-primary); }
   opacity: 1;
 }
 
-.blog-featured-rank {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: 0.8125rem;
-  font-weight: 800;
-  font-family: var(--font-mono);
-  color: var(--color-ink);
-  background: oklch(0.60 0.16 265 / 0.15);
-  border-radius: 6px;
-  margin-bottom: var(--space-4);
-}
-
 .blog-featured-card-meta {
   display: flex;
   align-items: center;

@@ -58,8 +58,7 @@
     var grid = document.createElement('div');
     grid.className = 'blog-featured-grid';
 
-    topPosts.forEach(function(post, i) {
-      var rank = i + 1;
+    topPosts.forEach(function(post) {
       var card = document.createElement('a');
       card.href = post.url;
       card.className = 'blog-featured-card';
@@ -68,7 +67,6 @@
       var tags = post.tags || [];
 
       card.innerHTML =
-        '<span class="blog-featured-rank">#' + rank + '</span>' +
         '<div class="blog-featured-card-meta">' +
           '<time>' + post.date + '</time>' +
           (cats.length ? '<span class="post-card-category">' + escapeHtml(cats[0]) + '</span>' : '') +
