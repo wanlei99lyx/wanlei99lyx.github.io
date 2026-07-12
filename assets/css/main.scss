@@ -90,8 +90,35 @@ a:hover { color: var(--color-primary); }
 #starField {
   position: fixed;
   inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+#earthCanvas {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(50vw, 400px);
+  height: min(50vw, 400px);
   z-index: -1;
   pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.6s ease;
+}
+
+@media (max-width: 768px) {
+  #earthCanvas {
+    width: 50vw;
+    height: 50vw;
+    opacity: 0.35;
+  }
+}
+
+/* Page wrapper — above background layers */
+.page {
+  position: relative;
+  z-index: 1;
 }
 
 .star {
