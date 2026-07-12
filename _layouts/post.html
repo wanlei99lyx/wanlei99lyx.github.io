@@ -56,3 +56,11 @@ layout: default
     </footer>
   </div>
 </article>
+
+<script>
+(function() {
+  var key = (window.location.pathname || '').replace(/^\//, '').replace(/\/$/, '') || 'home';
+  fetch('https://api.countapi.xyz/hit/wanlei99lyx.github.io/' + encodeURIComponent(key))
+    .catch(function() {});
+})();
+</script>
