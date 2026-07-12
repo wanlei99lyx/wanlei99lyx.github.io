@@ -6,8 +6,8 @@
   var scene, camera, renderer, earth, cloud;
 
   function getSize() {
-    var s = Math.min(window.innerWidth, window.innerHeight) * 0.42;
-    return Math.max(160, Math.min(s, 420));
+    var s = Math.min(window.innerWidth, window.innerHeight) * 0.50;
+    return Math.max(200, Math.min(s, 520));
   }
 
   function init() {
@@ -22,8 +22,8 @@
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
-    camera.position.z = 4.5;
+    camera = new THREE.PerspectiveCamera(36, 1, 0.1, 1000);
+    camera.position.z = 4.8;
 
     var texLoader = new THREE.TextureLoader();
 
@@ -31,11 +31,11 @@
     var earthTex = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
     var earthMat = new THREE.MeshPhongMaterial({
       map: earthTex,
-      color: 0x4488ff,
-      specular: new THREE.Color(0x222244),
-      shininess: 8
+      color: 0x5599ff,
+      specular: new THREE.Color(0x334466),
+      shininess: 16
     });
-    earth = new THREE.Mesh(new THREE.SphereGeometry(1.3, 64, 64), earthMat);
+    earth = new THREE.Mesh(new THREE.SphereGeometry(1.45, 64, 64), earthMat);
     scene.add(earth);
 
     // Cloud layer
@@ -43,20 +43,20 @@
     var cloudMat = new THREE.MeshPhongMaterial({
       map: cloudTex,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.35,
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
       depthWrite: false
     });
-    cloud = new THREE.Mesh(new THREE.SphereGeometry(1.32, 64, 64), cloudMat);
+    cloud = new THREE.Mesh(new THREE.SphereGeometry(1.48, 64, 64), cloudMat);
     scene.add(cloud);
 
     // Lighting
-    scene.add(new THREE.AmbientLight(0x404080, 0.35));
-    var sun = new THREE.DirectionalLight(0xffffff, 1.0);
+    scene.add(new THREE.AmbientLight(0x404080, 0.5));
+    var sun = new THREE.DirectionalLight(0xffffff, 1.4);
     sun.position.set(5, 3, 5);
     scene.add(sun);
-    var fill = new THREE.DirectionalLight(0x4488ff, 0.25);
+    var fill = new THREE.DirectionalLight(0x4488ff, 0.4);
     fill.position.set(-3, -1, -3);
     scene.add(fill);
 
