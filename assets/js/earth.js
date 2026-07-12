@@ -6,8 +6,8 @@
   var scene, camera, renderer, earth, cloud;
 
   function getSize() {
-    var s = Math.min(window.innerWidth, window.innerHeight) * 0.50;
-    return Math.max(200, Math.min(s, 520));
+    var s = Math.min(window.innerWidth, window.innerHeight) * 0.60;
+    return Math.max(240, Math.min(s, 600));
   }
 
   function init() {
@@ -23,7 +23,7 @@
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(36, 1, 0.1, 1000);
-    camera.position.z = 4.8;
+    camera.position.z = 5.2;
 
     var texLoader = new THREE.TextureLoader();
 
@@ -35,7 +35,7 @@
       specular: new THREE.Color(0x334466),
       shininess: 16
     });
-    earth = new THREE.Mesh(new THREE.SphereGeometry(1.45, 64, 64), earthMat);
+    earth = new THREE.Mesh(new THREE.SphereGeometry(1.6, 64, 64), earthMat);
     scene.add(earth);
 
     // Cloud layer
@@ -48,7 +48,7 @@
       side: THREE.DoubleSide,
       depthWrite: false
     });
-    cloud = new THREE.Mesh(new THREE.SphereGeometry(1.48, 64, 64), cloudMat);
+    cloud = new THREE.Mesh(new THREE.SphereGeometry(1.64, 64, 64), cloudMat);
     scene.add(cloud);
 
     // Lighting
