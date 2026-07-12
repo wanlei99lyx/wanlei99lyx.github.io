@@ -47,11 +47,13 @@ permalink: /blog/
       <!-- Post data for JS -->
       <script id="blogPostsData" type="application/json">[
         {% for post in site.posts %}
+        {% assign pv = site.data.views | where: "url", post.url | first %}
         {
           "url": "{{ post.url }}",
           "title": {{ post.title | jsonify }},
           "excerpt": {{ post.excerpt | strip_html | truncate: 200 | jsonify }},
           "date": "{{ post.date | date: "%Y-%m-%d" }}",
+          "views": {{ pv.views | default: 0 }},
           "categories": [{% for cat in post.categories %}{{ cat | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}],
           "tags": [{% for tag in post.tags limit:4 %}{{ tag | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}]
         }{% unless forloop.last %},{% endunless %}

@@ -1,8 +1,5 @@
 // Category filter + top viewed featured section
 (function() {
-  var COUNT_API = 'https://api.countapi.xyz';
-  var COUNT_NS = 'wanlei99lyx.github.io';
-
   /* ========== Category Tabs ========== */
   var tabs = document.querySelectorAll('.blog-tab');
   var cards = document.querySelectorAll('.blog-card');
@@ -32,29 +29,20 @@
 
   var TOP_N = 3;
 
-  function getKey(url) {
-    return url.replace(/^\//, '').replace(/\/$/, '') || 'home';
-  }
-
-  function fetchCount(url) {
-    var key = getKey(url);
-    return fetch(COUNT_API + '/get/' + COUNT_NS + '/' + encodeURIComponent(key))
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(d) { return d && typeof d.value === 'number' ? d.value : 0; })
-      .catch(function() { return 0; });
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
   }
 
   function renderFeatured(topPosts) {
     var container = document.getElementById('blogFeaturedContent');
     var label = document.getElementById('blogFeaturedLabel');
     if (!container) return;
-
     if (!topPosts || topPosts.length === 0) return;
 
-    // Change label
     if (label) label.textContent = '热门文章';
 
-    // Build grid of top viewed cards
     var grid = document.createElement('div');
     grid.className = 'blog-featured-grid';
 
@@ -81,7 +69,7 @@
     container.innerHTML = '';
     container.appendChild(grid);
 
-    // Hide featured posts from the grid to avoid duplication
+    // Hide featured posts from grid to avoid duplication
     var featuredUrls = {};
     topPosts.forEach(function(p) { featuredUrls[p.url] = true; });
     cards.forEach(function(card) {
@@ -92,23 +80,7 @@
     });
   }
 
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  // Fetch all counts and render top N
-  Promise.all(postsData.map(function(post) {
-    return fetchCount(post.url).then(function(count) {
-      post.count = count;
-      return post;
-    });
-  })).then(function(all) {
-    all.sort(function(a, b) { return b.count - a.count; });
-    var top = all.slice(0, TOP_N);
-    renderFeatured(top);
-  }).catch(function() {
-    // CountAPI failed — keep server-rendered fallback as-is
-  });
+  // Sort by views embedded in page, take top N
+  var sorted = postsData.slice().sort(function(a, b) { return (b.views || 0) - (a.views || 0); });
+  renderFeatured(sorted.slice(0, TOP_N));
 })();
