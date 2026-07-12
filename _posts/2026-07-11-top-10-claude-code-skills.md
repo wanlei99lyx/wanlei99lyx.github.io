@@ -2,6 +2,7 @@
 layout: post
 title: "2026 年最值得装的 10 个 Claude Code Skill — 实测推荐"
 date: 2026-07-11 14:00:00 +0800
+pinned: true
 categories: [AI, 开发工具]
 tags: [Claude Code, Skill, 效率提升, AI编程, 工具推荐]
 ---

@@ -11,7 +11,8 @@ permalink: /blog/
     </header>
 
     {% if site.posts.size > 0 %}
-      {% assign featured = site.posts | first %}
+      {% assign pinned = site.posts | where: "pinned", true | first %}
+      {% assign featured = pinned | default: site.posts.first %}
 
       <section class="blog-featured">
         <a href="{{ featured.url | relative_url }}" class="blog-featured-link">
@@ -45,7 +46,7 @@ permalink: /blog/
       </div>
 
       <div class="blog-grid" id="blogGrid">
-        {% for post in site.posts offset:1 %}
+        {% for post in site.posts %}{% unless post.url == featured.url %}
           <article class="blog-card" data-category="{% for cat in post.categories %}{{ cat | slugify }} {% endfor %}">
             <a href="{{ post.url | relative_url }}" class="blog-card-link">
               <div class="post-card-meta">
@@ -67,7 +68,7 @@ permalink: /blog/
               </div>
             </a>
           </article>
-        {% endfor %}
+        {% endunless %}{% endfor %}
       </div>
     {% else %}
       <p class="empty-state">还没有文章，敬请期待...</p>
