@@ -676,6 +676,31 @@ a:hover { color: var(--color-primary); }
   border-top: 1px solid var(--color-border);
 }
 
+/* Comments */
+.post-comments {
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+}
+
+.post-comments-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+  color: var(--color-ink);
+}
+
+.post-comments-hint {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  margin-bottom: var(--space-6);
+}
+
+/* utterances dark theme overrides */
+.utterances {
+  max-width: 100% !important;
+}
+
 .post-nav {
   display: flex;
   justify-content: space-between;
