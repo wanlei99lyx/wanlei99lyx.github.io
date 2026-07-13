@@ -300,71 +300,77 @@ a:hover { color: var(--color-primary); }
   flex-wrap: wrap;
 }
 
-/* === Hero Search === */
-.hero-search {
-  margin-top: var(--space-8);
-  max-width: 480px;
-  width: 100%;
-  position: relative;
+/* === Nav Search === */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
 }
 
-.search-box {
+.nav-search {
+  position: relative;
   display: flex;
   align-items: center;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 0 var(--space-4);
+  border-radius: 8px;
+  padding: 0 var(--space-3);
   transition: border-color 200ms ease-out, box-shadow 200ms ease-out;
+  width: 180px;
 }
 
-.search-box:focus-within {
+.nav-search:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px oklch(0.60 0.16 265 / 0.15);
+  box-shadow: 0 0 0 3px oklch(0.60 0.16 265 / 0.12);
+  width: 260px;
 }
 
-.search-icon {
-  width: 20px;
-  height: 20px;
+.nav-search-icon {
+  width: 16px;
+  height: 16px;
   color: var(--color-muted);
   flex-shrink: 0;
 }
 
-.search-input {
+.nav-search-input {
   flex: 1;
   background: none;
   border: none;
   outline: none;
-  padding: 0.75rem var(--space-3);
-  font-size: 0.9375rem;
+  padding: 0.45rem var(--space-2);
+  font-size: 0.8125rem;
   color: var(--color-ink);
   font-family: var(--font-body);
+  min-width: 0;
 }
 
-.search-input::placeholder {
+.nav-search-input::placeholder {
   color: var(--color-muted);
 }
 
-.search-results {
+.nav-search .search-results {
   position: absolute;
   top: calc(100% + 6px);
-  left: 0;
   right: 0;
+  left: 0;
+  min-width: 320px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   overflow: hidden;
   display: none;
-  z-index: 10;
+  z-index: 100;
   max-height: 420px;
   overflow-y: auto;
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.4);
 }
 
-.search-results.visible {
+.nav-search .search-results.visible {
   display: block;
 }
 
-.search-result-item {
+.nav-search .search-result-item {
   display: block;
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
@@ -373,46 +379,36 @@ a:hover { color: var(--color-primary); }
   transition: background 150ms ease-out;
 }
 
-.search-result-item:last-child {
+.nav-search .search-result-item:last-child {
   border-bottom: none;
 }
 
-.search-result-item:hover,
-.search-result-item.highlighted {
+.nav-search .search-result-item:hover,
+.nav-search .search-result-item.highlighted {
   background: var(--color-surface-raised);
 }
 
-.search-result-title {
-  font-size: 0.9375rem;
+.nav-search .search-result-title {
+  font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 2px;
   line-height: 1.4;
 }
 
-.search-result-meta {
-  font-size: 0.8125rem;
+.nav-search .search-result-meta {
+  font-size: 0.75rem;
   color: var(--color-muted);
   display: flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-.search-empty {
-  padding: var(--space-6);
+.nav-search .search-empty {
+  padding: var(--space-5);
   text-align: center;
   color: var(--color-muted);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   line-height: 1.6;
-}
-
-.search-empty-key {
-  display: inline-block;
-  padding: 1px 6px;
-  background: var(--color-surface-raised);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-family: var(--font-mono);
 }
 
 /* === Buttons === */
@@ -1281,6 +1277,25 @@ a:hover { color: var(--color-primary); }
     display: flex;
   }
 
+  .nav-search {
+    width: 140px;
+  }
+
+  .nav-search:focus-within {
+    width: 200px;
+  }
+
+  .nav-search .search-results {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    min-width: 0;
+    border-radius: 0;
+    max-height: calc(100vh - var(--nav-height));
+    box-shadow: 0 8px 32px oklch(0 0 0 / 0.5);
+  }
+
   .hero {
     min-height: 60vh;
   }
@@ -1316,6 +1331,30 @@ a:hover { color: var(--color-primary); }
 }
 
 @media (max-width: 480px) {
+  .nav-search {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+    border-color: transparent;
+    background: none;
+  }
+
+  .nav-search:focus-within {
+    width: auto;
+    flex: 1;
+    padding: 0 var(--space-3);
+    background: var(--color-surface);
+    border-color: var(--color-primary);
+  }
+
+  .nav-search-input {
+    display: none;
+  }
+
+  .nav-search:focus-within .nav-search-input {
+    display: block;
+  }
+
   .hero-actions {
     flex-direction: column;
   }
