@@ -6,8 +6,8 @@
   var scene, camera, renderer, earth, cloud;
 
   function getSize() {
-    var s = Math.min(window.innerWidth, window.innerHeight) * 0.60;
-    return Math.max(240, Math.min(s, 600));
+    var s = Math.min(window.innerWidth, window.innerHeight) * 0.75;
+    return Math.max(240, Math.min(s, 750));
   }
 
   function init() {
