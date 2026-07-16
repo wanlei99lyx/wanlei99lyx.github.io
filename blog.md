@@ -60,6 +60,14 @@ permalink: /blog/
         {% endfor %}
       ]</script>
 
+      <div class="blog-tabs">
+        <button class="blog-tab active" data-filter="all">全部</button>
+        {% assign categories = site.posts | map: "categories" | flatten | uniq | sort %}
+        {% for category in categories %}
+          <button class="blog-tab" data-filter="{{ category | slugify }}">{{ category }}</button>
+        {% endfor %}
+      </div>
+
       <div class="blog-grid" id="blogGrid">
         {% for post in site.posts %}
           <article class="blog-card" data-url="{{ post.url }}" data-category="{% for cat in post.categories %}{{ cat | slugify }} {% endfor %}">

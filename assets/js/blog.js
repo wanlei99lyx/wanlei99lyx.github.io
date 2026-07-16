@@ -1,5 +1,23 @@
-// Top viewed featured section
+// Category filter + top viewed featured section
 (function() {
+  /* ========== Category Tabs ========== */
+  var tabs = document.querySelectorAll('.blog-tab');
+  var cards = document.querySelectorAll('.blog-card');
+
+  if (tabs.length && cards.length) {
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        var filter = tab.getAttribute('data-filter');
+        cards.forEach(function(card) {
+          var cats = (card.getAttribute('data-category') || '').trim().split(/\s+/);
+          card.style.display = (filter === 'all' || cats.indexOf(filter) !== -1) ? '' : 'none';
+        });
+      });
+    });
+  }
+
   /* ========== Top Viewed Featured ========== */
   var postsData = (function() {
     var el = document.getElementById('blogPostsData');
@@ -52,7 +70,6 @@
     container.appendChild(grid);
 
     // Hide featured posts from grid to avoid duplication
-    var cards = document.querySelectorAll('.blog-card');
     var featuredUrls = {};
     topPosts.forEach(function(p) { featuredUrls[p.url] = true; });
     cards.forEach(function(card) {
