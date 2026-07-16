@@ -33,11 +33,13 @@
       card.href = post.url;
       card.className = 'blog-featured-card';
 
+      var cats = post.categories || [];
       var tags = post.tags || [];
 
       card.innerHTML =
         '<div class="blog-featured-card-meta">' +
           '<time>' + post.date + '</time>' +
+          (cats.length ? '<span class="post-card-category">' + escapeHtml(cats[0]) + '</span>' : '') +
         '</div>' +
         '<h3 class="blog-featured-card-title">' + escapeHtml(post.title) + '</h3>' +
         '<p class="blog-featured-card-excerpt">' + escapeHtml(post.excerpt) + '</p>' +
