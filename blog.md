@@ -26,9 +26,6 @@ permalink: /blog/
               {% if pinned %}<span class="blog-featured-badge">置顶</span>{% endif %}
               <div class="blog-featured-meta">
                 <time datetime="{{ fallback.date | date_to_xmlschema }}">{{ fallback.date | date: "%Y-%m-%d" }}</time>
-                {% if fallback.categories.size > 0 %}
-                  <span class="post-card-category">{{ fallback.categories | first }}</span>
-                {% endif %}
               </div>
               <h2 class="blog-featured-title">{{ fallback.title }}</h2>
               <p class="blog-featured-excerpt">{{ fallback.excerpt | strip_html | truncate: 200 }}</p>
@@ -54,29 +51,17 @@ permalink: /blog/
           "excerpt": {{ post.excerpt | strip_html | truncate: 200 | jsonify }},
           "date": "{{ post.date | date: "%Y-%m-%d" }}",
           "views": {{ pv.views | default: 0 }},
-          "categories": [{% for cat in post.categories %}{{ cat | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}],
           "tags": [{% for tag in post.tags limit:4 %}{{ tag | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}]
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ]</script>
 
-      <div class="blog-tabs">
-        <button class="blog-tab active" data-filter="all">全部</button>
-        {% assign categories = site.posts | map: "categories" | flatten | uniq | sort %}
-        {% for category in categories %}
-          <button class="blog-tab" data-filter="{{ category | slugify }}">{{ category }}</button>
-        {% endfor %}
-      </div>
-
       <div class="blog-grid" id="blogGrid">
         {% for post in site.posts %}
-          <article class="blog-card" data-url="{{ post.url }}" data-category="{% for cat in post.categories %}{{ cat | slugify }} {% endfor %}">
+          <article class="blog-card" data-url="{{ post.url }}">
             <a href="{{ post.url | relative_url }}" class="blog-card-link">
               <div class="post-card-meta">
                 <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-                {% if post.categories.size > 0 %}
-                  <span class="post-card-category">{{ post.categories | first }}</span>
-                {% endif %}
               </div>
               <h3 class="blog-card-title">{{ post.title }}</h3>
               <p class="blog-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>

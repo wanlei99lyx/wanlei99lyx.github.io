@@ -1,23 +1,5 @@
-// Category filter + top viewed featured section
+// Top viewed featured section
 (function() {
-  /* ========== Category Tabs ========== */
-  var tabs = document.querySelectorAll('.blog-tab');
-  var cards = document.querySelectorAll('.blog-card');
-
-  if (tabs.length && cards.length) {
-    tabs.forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        tabs.forEach(function(t) { t.classList.remove('active'); });
-        tab.classList.add('active');
-        var filter = tab.getAttribute('data-filter');
-        cards.forEach(function(card) {
-          var cats = (card.getAttribute('data-category') || '').trim().split(/\s+/);
-          card.style.display = (filter === 'all' || cats.indexOf(filter) !== -1) ? '' : 'none';
-        });
-      });
-    });
-  }
-
   /* ========== Top Viewed Featured ========== */
   var postsData = (function() {
     var el = document.getElementById('blogPostsData');
@@ -51,13 +33,11 @@
       card.href = post.url;
       card.className = 'blog-featured-card';
 
-      var cats = post.categories || [];
       var tags = post.tags || [];
 
       card.innerHTML =
         '<div class="blog-featured-card-meta">' +
           '<time>' + post.date + '</time>' +
-          (cats.length ? '<span class="post-card-category">' + escapeHtml(cats[0]) + '</span>' : '') +
         '</div>' +
         '<h3 class="blog-featured-card-title">' + escapeHtml(post.title) + '</h3>' +
         '<p class="blog-featured-card-excerpt">' + escapeHtml(post.excerpt) + '</p>' +
@@ -70,6 +50,7 @@
     container.appendChild(grid);
 
     // Hide featured posts from grid to avoid duplication
+    var cards = document.querySelectorAll('.blog-card');
     var featuredUrls = {};
     topPosts.forEach(function(p) { featuredUrls[p.url] = true; });
     cards.forEach(function(card) {
