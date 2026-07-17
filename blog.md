@@ -60,7 +60,9 @@ permalink: /blog/
         <button class="blog-tab active" data-filter="all">全部</button>
         {% assign categories = site.posts | map: "categories" | flatten | uniq | sort %}
         {% for category in categories %}
+          {% unless category == "博客" %}
           <button class="blog-tab" data-filter="{{ category | slugify }}">{{ category }}</button>
+          {% endunless %}
         {% endfor %}
       </div>
 
