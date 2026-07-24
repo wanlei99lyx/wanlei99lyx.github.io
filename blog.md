@@ -70,7 +70,7 @@ permalink: /blog/
             </button>
             <div class="blog-dropdown-menu">
               <button class="blog-dropdown-item active" data-tag="all">全部</button>
-              <button class="blog-dropdown-item" data-tag="LangChain">LangChain</button>
+              <button class="blog-dropdown-item" data-tag="langchain">LangChain</button>
             </div>
           </div>
           {% else %}
