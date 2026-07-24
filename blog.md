@@ -51,6 +51,7 @@ permalink: /blog/
           "excerpt": {{ post.excerpt | strip_html | truncate: 200 | jsonify }},
           "date": "{{ post.date | date: "%Y-%m-%d" }}",
           "views": {{ pv.views | default: 0 }},
+          "categories": [{% for cat in post.categories %}{{ cat | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}],
           "tags": [{% for tag in post.tags limit:4 %}{{ tag | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}]
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
@@ -61,14 +62,27 @@ permalink: /blog/
         {% assign categories = site.posts | map: "categories" | flatten | uniq | sort %}
         {% for category in categories %}
           {% unless category == "博客" %}
+          {% if category == "开发工具" %}
+          <div class="blog-tab-dropdown">
+            <button class="blog-tab blog-tab-with-dropdown" data-filter="{{ category | slugify }}">
+              开发工具
+              <svg class="dropdown-arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="blog-dropdown-menu">
+              <button class="blog-dropdown-item active" data-tag="all">全部</button>
+              <button class="blog-dropdown-item" data-tag="LangChain">LangChain</button>
+            </div>
+          </div>
+          {% else %}
           <button class="blog-tab" data-filter="{{ category | slugify }}">{{ category }}</button>
+          {% endif %}
           {% endunless %}
         {% endfor %}
       </div>
 
       <div class="blog-grid" id="blogGrid">
         {% for post in site.posts %}
-          <article class="blog-card" data-url="{{ post.url }}">
+          <article class="blog-card" data-url="{{ post.url }}" data-category="{% for cat in post.categories %}{{ cat | slugify }} {% endfor %}" data-tags="{% for tag in post.tags limit:4 %}{{ tag | slugify }} {% endfor %}">
             <a href="{{ post.url | relative_url }}" class="blog-card-link">
               <div class="post-card-meta">
                 <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>

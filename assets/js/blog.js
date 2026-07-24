@@ -1,22 +1,89 @@
-// Category filter + top viewed featured section
+// Category filter with sub-tag dropdown + top viewed featured section
 (function() {
   /* ========== Category Tabs ========== */
   var tabs = document.querySelectorAll('.blog-tab');
   var cards = document.querySelectorAll('.blog-card');
+  var activeSubTag = 'all';
 
+  function applyFilter(category, subTag) {
+    cards.forEach(function(card) {
+      var cats = (card.getAttribute('data-category') || '').trim().split(/\s+/);
+      var tags = (card.getAttribute('data-tags') || '').trim().split(/\s+/);
+      var catMatch = category === 'all' || cats.indexOf(category) !== -1;
+      var tagMatch = subTag === 'all' || tags.indexOf(subTag) !== -1;
+      card.style.display = catMatch && tagMatch ? '' : 'none';
+    });
+  }
+
+  function setActiveTab(activeTab) {
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    activeTab.classList.add('active');
+  }
+
+  function updateDropdownLabel(label) {
+    var dropdown = document.querySelector('.blog-tab-dropdown');
+    if (!dropdown) return;
+    var btn = dropdown.querySelector('.blog-tab-with-dropdown');
+    var items = dropdown.querySelectorAll('.blog-dropdown-item');
+    items.forEach(function(item) { item.classList.remove('active'); });
+    var match = dropdown.querySelector('[data-tag="' + label + '"]');
+    if (match) match.classList.add('active');
+  }
+
+  // Tab click
   if (tabs.length && cards.length) {
     tabs.forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        tabs.forEach(function(t) { t.classList.remove('active'); });
-        tab.classList.add('active');
+      tab.addEventListener('click', function(e) {
+        // Don't handle clicks on the dropdown toggle button here
+        if (tab.classList.contains('blog-tab-with-dropdown')) return;
+        setActiveTab(tab);
+        activeSubTag = 'all';
         var filter = tab.getAttribute('data-filter');
-        cards.forEach(function(card) {
-          var cats = (card.getAttribute('data-category') || '').trim().split(/\s+/);
-          card.style.display = (filter === 'all' || cats.indexOf(filter) !== -1) ? '' : 'none';
-        });
+        applyFilter(filter, 'all');
+        // Reset dropdown label
+        updateDropdownLabel('all');
       });
     });
   }
+
+  // Dropdown toggle
+  var dropdowns = document.querySelectorAll('.blog-tab-dropdown');
+  dropdowns.forEach(function(dd) {
+    var btn = dd.querySelector('.blog-tab-with-dropdown');
+    var menu = dd.querySelector('.blog-dropdown-menu');
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = dd.classList.contains('open');
+      closeAllDropdowns();
+      if (!isOpen) dd.classList.add('open');
+    });
+
+    // Dropdown item click
+    menu.addEventListener('click', function(e) {
+      var item = e.target.closest('.blog-dropdown-item');
+      if (!item) return;
+      var tag = item.getAttribute('data-tag');
+      activeSubTag = tag;
+      updateDropdownLabel(tag);
+
+      // Activate the parent tab
+      var parentTab = dd.querySelector('.blog-tab-with-dropdown');
+      setActiveTab(parentTab);
+
+      var filter = parentTab.getAttribute('data-filter');
+      applyFilter(filter, tag);
+      closeAllDropdowns();
+    });
+  });
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.blog-tab-dropdown.open').forEach(function(d) {
+      d.classList.remove('open');
+    });
+  }
+
+  document.addEventListener('click', closeAllDropdowns);
 
   /* ========== Top Viewed Featured ========== */
   var postsData = (function() {
