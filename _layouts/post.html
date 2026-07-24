@@ -3,7 +3,7 @@ layout: default
 ---
 
 <article class="post">
-  <div class="container container-narrow">
+  <div class="container{% unless page.toc %} container-narrow{% endunless %}">
     <header class="post-header">
       <div class="post-meta">
         <time datetime="{{ page.date | date_to_xmlschema }}">
@@ -30,8 +30,19 @@ layout: default
       {% endif %}
     </header>
 
-    <div class="post-content">
-      {{ content }}
+    <div class="post-layout-with-toc">
+      {% if page.toc %}
+      <aside class="post-toc" id="postToc">
+        <div class="post-toc-inner">
+          <div class="post-toc-title">目录</div>
+          <nav class="post-toc-nav" id="postTocNav"></nav>
+        </div>
+      </aside>
+      {% endif %}
+
+      <div class="post-content{% if page.toc %} post-content-with-toc{% endif %}" id="postContent">
+        {{ content }}
+      </div>
     </div>
 
     <footer class="post-footer">
@@ -71,3 +82,7 @@ layout: default
   crossorigin="anonymous"
   async>
 </script>
+
+{% if page.toc %}
+<script src="{{ '/assets/js/toc.js' | relative_url }}"></script>
+{% endif %}
