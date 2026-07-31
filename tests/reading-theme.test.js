@@ -227,3 +227,14 @@ test('light paper handles code, mobile overflow, and reduced motion explicitly',
     /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.post-reading-surface[\s\S]*\.reading-theme-thumb[\s\S]*transition\s*:\s*none/
   );
 });
+
+test('light reading control uses a dedicated surface-scoped focus color', () => {
+  assert.match(
+    mainStyles,
+    /html\[data-reading-theme=["']light["']\]\s+\.post-reading-surface\s*\{[^}]*--reading-focus\s*:/
+  );
+  assert.match(
+    mainStyles,
+    /html\[data-reading-theme=["']light["']\]\s+\.post-reading-surface\s+\.reading-theme-toggle:focus-visible\s*\{[^}]*outline\s*:\s*2px\s+solid\s+var\(--reading-focus\)[^}]*box-shadow\s*:[^;}]*var\(--reading-focus-halo\)/
+  );
+});

@@ -702,6 +702,8 @@ html[data-reading-theme="light"] .post-reading-surface {
   --reading-secondary: oklch(0.40 0.028 62);
   --reading-muted: oklch(0.52 0.028 65);
   --reading-border: oklch(0.78 0.035 72);
+  --reading-focus: oklch(0.43 0.11 210);
+  --reading-focus-halo: oklch(0.43 0.11 210 / 0.2);
   padding: clamp(var(--space-6), 4vw, var(--space-12));
   color: var(--reading-ink);
   background: var(--reading-bg);
@@ -709,6 +711,11 @@ html[data-reading-theme="light"] .post-reading-surface {
   border-radius: 18px;
   border-color: var(--reading-border);
   box-shadow: 0 18px 50px oklch(0.04 0.01 60 / 0.22);
+}
+
+html[data-reading-theme="light"] .post-reading-surface .reading-theme-toggle:focus-visible {
+  outline: 2px solid var(--reading-focus);
+  box-shadow: 0 0 0 4px var(--reading-focus-halo);
 }
 
 html[data-reading-theme="light"] .post-reading-surface .reading-theme-thumb {
