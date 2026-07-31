@@ -18,6 +18,10 @@ const postLayout = fs.readFileSync(
   path.join(__dirname, '../_layouts/post.html'),
   'utf8'
 );
+const mainStyles = fs.readFileSync(
+  path.join(__dirname, '../assets/css/main.scss'),
+  'utf8'
+);
 
 function createControl() {
   const label = { textContent: '' };
@@ -180,4 +184,14 @@ test('post reading surface wraps article chrome but excludes comments', () => {
   assert.match(postLayout, /\{% if page\.toc %\}[\s\S]*post-toc[\s\S]*toc\.js/);
   assert.match(postLayout, /page\.previous/);
   assert.match(postLayout, /page\.next/);
+});
+
+test('reading theme styles provide scoped paper tokens, control, and reduced motion', () => {
+  assert.match(mainStyles, /html\[data-reading-theme=["']light["']\]/);
+  assert.match(mainStyles, /--reading-bg\s*:/);
+  assert.match(mainStyles, /\.reading-theme-toggle\s*\{/);
+  assert.match(
+    mainStyles,
+    /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.post-reading-surface[\s\S]*\.reading-theme-thumb/
+  );
 });
