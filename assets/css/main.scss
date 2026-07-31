@@ -629,10 +629,8 @@ a:hover { color: var(--color-primary); }
   --reading-border: var(--color-border);
   color: var(--reading-ink);
   background: var(--reading-bg);
-  border: 1px solid transparent;
-  border-radius: 18px;
-  transition: background-color 240ms ease-out, border-color 240ms ease-out,
-    box-shadow 240ms ease-out, color 240ms ease-out, padding 240ms ease-out;
+  transition: background-color 240ms ease-out, box-shadow 240ms ease-out,
+    color 240ms ease-out;
 }
 
 .reading-theme-toggle {
@@ -707,79 +705,84 @@ html[data-reading-theme="light"] .post-reading-surface {
   padding: clamp(var(--space-6), 4vw, var(--space-12));
   color: var(--reading-ink);
   background: var(--reading-bg);
+  border: 1px solid var(--reading-border);
+  border-radius: 18px;
   border-color: var(--reading-border);
   box-shadow: 0 18px 50px oklch(0.04 0.01 60 / 0.22);
 }
 
-html[data-reading-theme="light"] .reading-theme-thumb {
+html[data-reading-theme="light"] .post-reading-surface .reading-theme-thumb {
   transform: translateX(0.875rem);
 }
 
-html[data-reading-theme="light"] .post-title,
-html[data-reading-theme="light"] .post-content,
-html[data-reading-theme="light"] .post-content :is(h2, h3, h4, strong) {
+html[data-reading-theme="light"] .post-reading-surface .post-title,
+html[data-reading-theme="light"] .post-reading-surface .post-content,
+html[data-reading-theme="light"] .post-reading-surface .post-content :is(h2, h3, h4, strong) {
   color: var(--reading-ink);
 }
 
-html[data-reading-theme="light"] .post-meta,
-html[data-reading-theme="light"] .post-toc-title {
+html[data-reading-theme="light"] .post-reading-surface .post-meta,
+html[data-reading-theme="light"] .post-reading-surface .post-toc-title {
   color: var(--reading-muted);
 }
 
-html[data-reading-theme="light"] .post-tags .tag,
-html[data-reading-theme="light"] .post-category,
-html[data-reading-theme="light"] .post-content a,
-html[data-reading-theme="light"] .post-nav-link:hover {
+html[data-reading-theme="light"] .post-reading-surface .post-tags .tag,
+html[data-reading-theme="light"] .post-reading-surface .post-content a,
+html[data-reading-theme="light"] .post-reading-surface .post-nav-link:hover {
   color: oklch(0.43 0.11 210);
 }
 
-html[data-reading-theme="light"] .post-content h2,
-html[data-reading-theme="light"] .post-content hr,
-html[data-reading-theme="light"] .post-footer,
-html[data-reading-theme="light"] .post-toc-title,
-html[data-reading-theme="light"] .post-toc,
-html[data-reading-theme="light"] .post-content :is(th, td),
-html[data-reading-theme="light"] .post-content img {
+html[data-reading-theme="light"] .post-reading-surface .post-category {
+  color: oklch(0.43 0.11 210) !important;
+}
+
+html[data-reading-theme="light"] .post-reading-surface .post-content h2,
+html[data-reading-theme="light"] .post-reading-surface .post-content hr,
+html[data-reading-theme="light"] .post-reading-surface .post-footer,
+html[data-reading-theme="light"] .post-reading-surface .post-toc-title,
+html[data-reading-theme="light"] .post-reading-surface .post-toc,
+html[data-reading-theme="light"] .post-reading-surface .post-content :is(th, td),
+html[data-reading-theme="light"] .post-reading-surface .post-content img {
   border-color: var(--reading-border);
 }
 
-html[data-reading-theme="light"] .post-content hr {
+html[data-reading-theme="light"] .post-reading-surface .post-content hr {
   background: var(--reading-border);
 }
 
-html[data-reading-theme="light"] .post-content blockquote,
-html[data-reading-theme="light"] .post-content code,
-html[data-reading-theme="light"] .post-content th {
+html[data-reading-theme="light"] .post-reading-surface .post-content blockquote,
+html[data-reading-theme="light"] .post-reading-surface .post-content code,
+html[data-reading-theme="light"] .post-reading-surface .post-content th {
   color: var(--reading-secondary);
   background: oklch(0.91 0.025 78);
   border-color: var(--reading-border);
 }
 
-html[data-reading-theme="light"] .post-content tr:nth-child(even) {
+html[data-reading-theme="light"] .post-reading-surface .post-content tr:nth-child(even) {
   background: oklch(0.93 0.02 80);
 }
 
-html[data-reading-theme="light"] .post-content pre,
-html[data-reading-theme="light"] .post-content pre code {
+html[data-reading-theme="light"] .post-reading-surface .post-content pre,
+html[data-reading-theme="light"] .post-reading-surface .post-content pre code {
   color: oklch(0.92 0.008 260);
   background: oklch(0.08 0.01 260);
 }
 
-html[data-reading-theme="light"] .post-content pre {
+html[data-reading-theme="light"] .post-reading-surface .post-content pre {
   border-color: oklch(0.28 0.02 260);
 }
 
-html[data-reading-theme="light"] .post-toc-nav a,
-html[data-reading-theme="light"] .post-nav-link {
+html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a,
+html[data-reading-theme="light"] .post-reading-surface .post-nav-link {
   color: var(--reading-secondary);
 }
 
-html[data-reading-theme="light"] .post-toc-nav a:hover {
+html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a:hover {
   color: var(--reading-ink);
   border-left-color: var(--reading-muted);
 }
 
-html[data-reading-theme="light"] .post-toc-nav a.active {
+html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a.active {
   color: oklch(0.43 0.11 210);
   border-left-color: var(--color-accent);
 }
@@ -1762,7 +1765,13 @@ html[data-reading-theme="light"] .post-toc-nav a.active {
     width: 4rem;
   }
 
-  html[data-reading-theme="light"] .post-toc-nav a.active {
+  html[data-reading-theme="light"] .post-reading-surface .post-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a.active {
     border-bottom-color: var(--color-accent);
   }
 }

@@ -195,3 +195,35 @@ test('reading theme styles provide scoped paper tokens, control, and reduced mot
     /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.post-reading-surface[\s\S]*\.reading-theme-thumb/
   );
 });
+
+test('light reading styles stay surface-scoped and preserve the dark layout', () => {
+  const defaultSurface = mainStyles.match(/\.post-reading-surface\s*\{([^}]*)\}/)?.[1] || '';
+  const lightSelectors = [
+    ...mainStyles.matchAll(/html\[data-reading-theme=["']light["'][^{,\r\n]*/g),
+  ].map((match) => match[0].trim());
+
+  assert.doesNotMatch(defaultSurface, /^\s*(?:border|padding)(?:-[\w-]+)?\s*:/m);
+  assert.ok(lightSelectors.length > 0);
+  for (const selector of lightSelectors) {
+    assert.match(selector, /\.post-reading-surface(?:\s|$)/);
+  }
+  assert.match(
+    mainStyles,
+    /html\[data-reading-theme=["']light["']\]\s+\.post-reading-surface\s+\.post-category[^\{]*\{[^}]*color\s*:[^;}]+!important/
+  );
+});
+
+test('light paper handles code, mobile overflow, and reduced motion explicitly', () => {
+  assert.match(
+    mainStyles,
+    /html\[data-reading-theme=["']light["']\]\s+\.post-reading-surface\s+\.post-content\s+pre[^\{]*\{[^}]*background\s*:\s*oklch\(0\.08/
+  );
+  assert.match(
+    mainStyles,
+    /@media\s*\(max-width:\s*640px\)[\s\S]*\.post-reading-surface[\s\S]*overflow-x\s*:\s*auto/
+  );
+  assert.match(
+    mainStyles,
+    /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*\.post-reading-surface[\s\S]*\.reading-theme-thumb[\s\S]*transition\s*:\s*none/
+  );
+});
