@@ -4,6 +4,7 @@ layout: default
 
 <article class="post">
   <div class="container{% unless page.toc %} container-narrow{% endunless %}">
+    <div class="post-reading-surface">
     <header class="post-header">
       <div class="post-meta">
         <time datetime="{{ page.date | date_to_xmlschema }}">
@@ -28,6 +29,12 @@ layout: default
           {% endfor %}
         </div>
       {% endif %}
+      <button class="reading-theme-toggle" id="readingThemeToggle" type="button" role="switch" aria-checked="false" aria-label="切换文章阅读主题">
+        <span class="reading-theme-icon reading-theme-icon-moon" aria-hidden="true">☾</span>
+        <span class="reading-theme-track" aria-hidden="true"><span class="reading-theme-thumb"></span></span>
+        <span class="reading-theme-icon reading-theme-icon-sun" aria-hidden="true">☀</span>
+        <span class="reading-theme-label" data-reading-theme-label>深色阅读</span>
+      </button>
     </header>
 
     <div class="post-layout-with-toc">
@@ -65,6 +72,7 @@ layout: default
         {% endif %}
       </div>
     </footer>
+    </div>
 
     <div class="post-comments">
       <div class="post-comments-header">
@@ -75,6 +83,7 @@ layout: default
   </div>
 </article>
 
+<script src="{{ '/assets/js/reading-theme.js' | relative_url }}"></script>
 <script src="https://utteranc.es/client.js"
   repo="wanlei99lyx/wanlei99lyx.github.io"
   issue-term="pathname"

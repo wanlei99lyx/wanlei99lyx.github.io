@@ -9,6 +9,18 @@
   <title>{% if page.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
 
+  {% if page.layout == 'post' %}
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('post-reading-theme');
+        document.documentElement.dataset.readingTheme = savedTheme === 'light' ? 'light' : 'dark';
+      } catch (error) {
+        document.documentElement.dataset.readingTheme = 'dark';
+      }
+    }());
+  </script>
+  {% endif %}
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

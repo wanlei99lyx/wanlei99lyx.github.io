@@ -10,6 +10,15 @@ const {
   toggleTheme,
 } = require('../assets/js/reading-theme.js');
 
+const defaultLayout = fs.readFileSync(
+  path.join(__dirname, '../_layouts/default.html'),
+  'utf8'
+);
+const postLayout = fs.readFileSync(
+  path.join(__dirname, '../_layouts/post.html'),
+  'utf8'
+);
+
 function createControl() {
   const label = { textContent: '' };
   const listeners = {};
@@ -126,4 +135,49 @@ test('browser initialization survives a throwing localStorage getter', () => {
   assert.doesNotThrow(() => runBrowserModule(context));
   assert.doesNotThrow(() => control.listeners.click());
   assert.equal(root.dataset.readingTheme, 'light');
+});
+
+test('post layout exposes an accessible reading theme control and script', () => {
+  assert.match(postLayout, /<button[^>]*\bid="readingThemeToggle"[^>]*>/);
+  assert.match(postLayout, /<button[^>]*\brole="switch"[^>]*>/);
+  assert.match(postLayout, /<button[^>]*\baria-checked="false"[^>]*>/);
+  assert.match(postLayout, /data-reading-theme-label/);
+  assert.match(postLayout, /assets\/js\/reading-theme\.js/);
+});
+
+test('default layout bootstraps post reading theme before the main stylesheet', () => {
+  const bootstrapIndex = defaultLayout.indexOf('post-reading-theme');
+  const stylesheetIndex = defaultLayout.indexOf("'/assets/css/main.css'");
+  const postScopeStart = defaultLayout.lastIndexOf(
+    "{% if page.layout == 'post' %}",
+    bootstrapIndex
+  );
+  const postScopeEnd = defaultLayout.indexOf('{% endif %}', bootstrapIndex);
+
+  assert.notEqual(bootstrapIndex, -1);
+  assert.ok(bootstrapIndex < stylesheetIndex);
+  assert.notEqual(postScopeStart, -1);
+  assert.ok(postScopeStart < bootstrapIndex && bootstrapIndex < postScopeEnd);
+});
+
+test('post reading surface wraps article chrome but excludes comments', () => {
+  const wrappers = postLayout.match(/class="post-reading-surface"/g) || [];
+  const surfaceStart = postLayout.indexOf('class="post-reading-surface"');
+  const headerIndex = postLayout.indexOf('class="post-header"');
+  const layoutIndex = postLayout.indexOf('class="post-layout-with-toc"');
+  const footerIndex = postLayout.indexOf('class="post-footer"');
+  const commentsIndex = postLayout.indexOf('class="post-comments"');
+  const surfaceMarkup = postLayout.slice(surfaceStart, commentsIndex);
+
+  assert.equal(wrappers.length, 1);
+  assert.ok(surfaceStart < headerIndex);
+  assert.ok(surfaceStart < layoutIndex);
+  assert.ok(surfaceStart < footerIndex);
+  assert.match(surfaceMarkup, /class="post-header"/);
+  assert.match(surfaceMarkup, /class="post-layout-with-toc"/);
+  assert.match(surfaceMarkup, /class="post-footer"/);
+  assert.match(postLayout, /<\/footer>\s*<\/div>\s*<div class="post-comments">/);
+  assert.match(postLayout, /\{% if page\.toc %\}[\s\S]*post-toc[\s\S]*toc\.js/);
+  assert.match(postLayout, /page\.previous/);
+  assert.match(postLayout, /page\.next/);
 });
