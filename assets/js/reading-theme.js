@@ -1,12 +1,15 @@
 (function (root, factory) {
-  var api = factory();
+  var api = factory(root);
 
   if (typeof module === 'object' && module.exports) {
     module.exports = api;
   } else {
     root.ReadingTheme = api;
+    if (root.document) {
+      api.init(root.document);
+    }
   }
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (host) {
   'use strict';
 
   var STORAGE_KEY = 'post-reading-theme';
@@ -45,7 +48,7 @@
   }
 
   function init(documentObject, storage) {
-    var doc = documentObject || document;
+    var doc = documentObject || host.document;
     var control = doc.querySelector('#readingThemeToggle');
     var root;
 
@@ -54,7 +57,13 @@
     }
 
     root = doc.documentElement;
-    storage = storage || window.localStorage;
+    if (storage === undefined) {
+      try {
+        storage = host.localStorage;
+      } catch (error) {
+        storage = null;
+      }
+    }
     applyTheme(root.dataset.readingTheme, root, control);
     control.addEventListener('click', function () {
       toggleTheme(root.dataset.readingTheme, root, control, storage);

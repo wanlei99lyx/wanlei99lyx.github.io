@@ -1,5 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
 
 const {
   normalizeTheme,
@@ -9,17 +12,31 @@ const {
 
 function createControl() {
   const label = { textContent: '' };
+  const listeners = {};
 
   return {
     attributes: {},
     label,
+    listeners,
     setAttribute(name, value) {
       this.attributes[name] = value;
     },
     querySelector(selector) {
       return selector === '[data-reading-theme-label]' ? label : null;
     },
+    addEventListener(type, listener) {
+      listeners[type] = listener;
+    },
   };
+}
+
+function runBrowserModule(context) {
+  const source = fs.readFileSync(
+    path.join(__dirname, '../assets/js/reading-theme.js'),
+    'utf8'
+  );
+
+  vm.runInNewContext(source, context);
 }
 
 test('normalizeTheme accepts light and dark, defaulting invalid values to dark', () => {
@@ -60,4 +77,53 @@ test('toggleTheme changes dark to light and ignores storage write failures', () 
       },
     });
   });
+});
+
+test('browser script initializes the control and persists click changes', () => {
+  const control = createControl();
+  const root = { dataset: { readingTheme: 'dark' } };
+  const writes = [];
+  const context = {
+    document: {
+      documentElement: root,
+      querySelector(selector) {
+        return selector === '#readingThemeToggle' ? control : null;
+      },
+    },
+    localStorage: {
+      setItem(key, value) {
+        writes.push([key, value]);
+      },
+    },
+  };
+
+  runBrowserModule(context);
+
+  assert.equal(typeof control.listeners.click, 'function');
+  control.listeners.click();
+  assert.equal(root.dataset.readingTheme, 'light');
+  assert.deepEqual(writes, [['post-reading-theme', 'light']]);
+});
+
+test('browser initialization survives a throwing localStorage getter', () => {
+  const control = createControl();
+  const root = { dataset: { readingTheme: 'dark' } };
+  const context = {
+    document: {
+      documentElement: root,
+      querySelector() {
+        return control;
+      },
+    },
+  };
+
+  Object.defineProperty(context, 'localStorage', {
+    get() {
+      throw new DOMException('Access denied', 'SecurityError');
+    },
+  });
+
+  assert.doesNotThrow(() => runBrowserModule(context));
+  assert.doesNotThrow(() => control.listeners.click());
+  assert.equal(root.dataset.readingTheme, 'light');
 });
