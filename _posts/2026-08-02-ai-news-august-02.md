@@ -6,9 +6,9 @@ categories: [行业动态]
 tags: [OpenAI, Astra, 数学证明, Suno, 版权, AI安全, 智能体逃逸, 马斯克, Altman, 算力]
 ---
 
-![AI 与数学证明](/assets/images/posts/ai-aug02-math-proof.jpg)
-
 今天（8 月 2 日）的 AI 新闻出现了一个耐人寻味的"撕裂"：一边是 OpenAI 下一代模型 **Astra** 以约 2000 美元的成本攻克了 10 项悬而未决数十年的数学难题——AI 的"智商"达到历史新高度；另一边，德国慕尼黑法院裁定 AI 音乐公司 Suno 侵权成立，欧盟在 AI 版权上立起了里程碑式的判例——AI 的"合法边界"正在被收紧。能力跃升与合规收缩并存，这正是 2026 年 AI 行业的真实写照。
+
+![AI 与数学证明](/assets/images/posts/ai-aug02-math-proof.jpg)
 
 ## OpenAI Astra：2000 美元攻克 10 项数学难题
 
