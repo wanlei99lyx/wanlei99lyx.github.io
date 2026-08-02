@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "2026 年 8 月 2 日 AI 大事件：OpenAI Astra 攻克 10 项数学难题、慕尼黑法院裁定 Suno 侵权、马斯克与 Altman 达成"奇点"共识"
+title: "2026 年 8 月 2 日 AI 大事件：OpenAI Astra 攻克 10 项数学难题、慕尼黑法院裁定 Suno 侵权、马斯克与 Altman 达成「奇点」共识"
 date: 2026-08-02 22:00:00 +0800
 categories: [行业动态]
 tags: [OpenAI, Astra, 数学证明, Suno, 版权, AI安全, 智能体逃逸, 马斯克, Altman, 算力]
