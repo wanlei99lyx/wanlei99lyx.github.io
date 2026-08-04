@@ -49,6 +49,8 @@ Grok 4.5 的 **输出价格仅为 Opus 的 1/4，GPT-5.6 Sol 的 1/5**。更关�
 
 ![](/assets/images/posts/grok45-compare.jpg)
 
+*图片来源：Price Candlestick Charts (US$) and SMA(50)，作者 Nikolay Zvezdin（Wikimedia Commons），CC BY-SA 4.0*
+
 ## 产品整合：Cursor 不再独立
 
 收购 Cursor 后，Grok 4.5 成为首个与 Cursor 深度绑定的模型。模式类似 OpenAI 把 Codex 并入 ChatGPT——**AI 聊天 + 编程 IDE 在走向融合**。
