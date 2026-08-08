@@ -125,7 +125,6 @@ DeepSeek 的资本故事也在今天浮出更多细节：
 - [科学家利用AI设计出首批人工病毒，生物安全引发广泛关注 - 至顶网](https://www.zhiding.cn/ai4s-and-ai4good/2026/0807/3195657.shtml)
 - [AI 创造 16 种新病毒，生物安全疑虑升温 - Edge](https://www.edgen.tech/zh-tw/news/post/ai-creates-16-new-viruses-as-biosecurity-concerns-mount)
 - [利空突袭，芯片巨头直线跳水！DeepSeek拟大幅涨价，原因找到了 - 网易](https://www.163.com/dy/article/L3PB39AP0556DGNT.html)
-- [AI科技早报 | 2026年08月08日](https://gschaos.club/4009.html)
 - [Edge AI Daily 早报（8月8日）- 钛媒体](https://www.tmtpost.com/index.php/8095938.html)
 - [【数智周报】张一鸣：字节跳动「拒绝蒸馏」；三星发布下一代AI存储路线图 - Marsbit](https://news.marsbit.co/20260808183207630638.html)
 - [AI Daily Briefing · Issue #550, August 8 - RadarAI](https://radarai.top/en/updates/brief-20260808-0800)
