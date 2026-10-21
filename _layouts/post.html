@@ -2,8 +2,13 @@
 layout: default
 ---
 
+{% assign is_ai_news = false %}
+{% if page.categories contains '行业动态' %}
+  {% assign is_ai_news = true %}
+{% endif %}
+
 <article class="post">
-  <div class="container{% unless page.toc %} container-narrow{% endunless %}">
+  <div class="container{% unless page.toc or is_ai_news %} container-narrow{% endunless %}">
     <div class="post-reading-surface">
     <header class="post-header">
       <div class="post-meta">
@@ -37,17 +42,46 @@ layout: default
       </button>
     </header>
 
+    {% if is_ai_news %}
+      {% assign ai_news_posts = site.posts | where_exp: "post", "post.categories contains '行业动态'" %}
+    {% endif %}
+
     <div class="post-layout-with-toc">
-      {% if page.toc %}
-      <aside class="post-toc" id="postToc">
-        <div class="post-toc-inner">
-          <div class="post-toc-title">目录</div>
-          <nav class="post-toc-nav" id="postTocNav"></nav>
+      {% if page.toc or is_ai_news %}
+      <aside class="post-sidebar">
+        {% if is_ai_news %}
+        <section class="ai-news-nav" aria-labelledby="aiNewsNavTitle">
+          <div class="ai-news-nav-title" id="aiNewsNavTitle">AI 大事</div>
+          <nav class="ai-news-nav-list" id="aiNewsNavList" aria-label="AI 大事文章导航">
+            {% for post in ai_news_posts %}
+            <div class="ai-news-nav-item{% if forloop.index > 10 %} is-hidden{% endif %}"{% if forloop.index > 10 %} hidden{% endif %}>
+              <a href="{{ post.url | relative_url }}" class="ai-news-nav-link{% if post.url == page.url %} is-current{% endif %}"{% if post.url == page.url %} aria-current="page"{% endif %}>
+                <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m-%d" }}</time>
+                <span>{{ post.title }}</span>
+              </a>
+            </div>
+            {% endfor %}
+          </nav>
+          {% if ai_news_posts.size > 10 %}
+          <button class="ai-news-nav-more" id="aiNewsNavMore" type="button" aria-expanded="false" aria-label="查看全部">
+            <span>查看全部</span>
+          </button>
+          {% endif %}
+        </section>
+        {% endif %}
+
+        {% if page.toc %}
+        <div class="post-toc" id="postToc">
+          <div class="post-toc-inner">
+            <div class="post-toc-title">目录</div>
+            <nav class="post-toc-nav" id="postTocNav"></nav>
+          </div>
         </div>
+        {% endif %}
       </aside>
       {% endif %}
 
-      <div class="post-content{% if page.toc %} post-content-with-toc{% endif %}" id="postContent">
+      <div class="post-content{% if page.toc or is_ai_news %} post-content-with-toc{% endif %}" id="postContent">
         {{ content }}
       </div>
     </div>
@@ -84,6 +118,9 @@ layout: default
 </article>
 
 <script src="{{ '/assets/js/reading-theme.js' | relative_url }}"></script>
+{% if page.categories contains '行业动态' %}
+<script src="{{ '/assets/js/ai-news-nav.js' | relative_url }}"></script>
+{% endif %}
 <script src="https://utteranc.es/client.js"
   repo="wanlei99lyx/wanlei99lyx.github.io"
   issue-term="pathname"

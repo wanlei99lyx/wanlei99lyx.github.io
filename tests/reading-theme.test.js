@@ -9,6 +9,7 @@ const {
   applyTheme,
   toggleTheme,
 } = require('../assets/js/reading-theme.js');
+const { init: initAiNewsNav, toggleExpanded } = require('../assets/js/ai-news-nav.js');
 
 const defaultLayout = fs.readFileSync(
   path.join(__dirname, '../_layouts/default.html'),
@@ -162,6 +163,298 @@ test('default layout bootstraps post reading theme before the main stylesheet', 
   assert.ok(bootstrapIndex < stylesheetIndex);
   assert.notEqual(postScopeStart, -1);
   assert.ok(postScopeStart < bootstrapIndex && bootstrapIndex < postScopeEnd);
+});
+
+test('AI news posts use the wide container alongside TOC posts', () => {
+  assert.match(
+    postLayout,
+    /assign is_ai_news[\s\S]*container\{% unless page\.toc or is_ai_news %\} container-narrow\{% endunless %\}/
+  );
+  assert.match(postLayout, /if page\.toc or is_ai_news/);
+});
+
+test('post sidebar contains the industry news navigation and its Liquid data source', () => {
+  const sidebarStart = postLayout.indexOf('post-sidebar');
+  const contentStart = postLayout.indexOf('post-content', sidebarStart);
+  const sidebar = postLayout.slice(sidebarStart, contentStart);
+
+  assert.match(
+    postLayout,
+    /{%\s*if\s+page\.categories\s+contains\s+['\"]行业动态['\"]\s*%}/
+  );
+  assert.notEqual(sidebarStart, -1);
+  assert.ok(contentStart > sidebarStart);
+  assert.match(sidebar, /<nav[^>]*\bid="aiNewsNavList"[^>]*>/);
+  assert.match(sidebar, /<button[^>]*\bid="aiNewsNavMore"[^>]*>/);
+  assert.match(sidebar, /class="ai-news-nav(?:\s|["'])/);
+  assert.match(sidebar, /class="ai-news-nav-more(?:\s|["'])/);
+  assert.match(sidebar, /aria-current\s*=\s*["']page["']/);
+  assert.match(postLayout, /site\.posts/);
+});
+
+test('existing TOC stays inside the post sidebar', () => {
+  const sidebarStart = postLayout.indexOf('class="post-sidebar"');
+  const sidebarEnd = postLayout.indexOf('</aside>', sidebarStart);
+  const tocStart = postLayout.indexOf('class="post-toc"');
+
+  assert.notEqual(sidebarStart, -1);
+  assert.notEqual(sidebarEnd, -1);
+  assert.ok(sidebarStart < tocStart && tocStart < sidebarEnd);
+});
+
+test('AI news sidebar styles use direct selectors and scoped responsive rules', () => {
+  assert.match(mainStyles, /\.ai-news-nav-link\.is-current\s*\{/);
+  assert.match(mainStyles, /\.ai-news-nav-item\.is-hidden\s*\{[^}]*display\s*:\s*none/);
+  assert.match(mainStyles, /\.ai-news-nav-list\s*\{/);
+  assert.match(
+    mainStyles,
+    /@media\s*\(max-width\s*:\s*1024px\)[\s\S]*?\.ai-news-nav[\s\S]*?\{[\s\S]*?overflow-x\s*:\s*auto/
+  );
+  assert.match(
+    mainStyles,
+    /@media\s*\(prefers-reduced-motion\s*:\s*reduce\)[\s\S]*?\.(?:ai-news-nav-link|ai-news-nav-more)[\s\S]*?\{/
+  );
+});
+
+test('AI news navigation initializes with only expandable items', () => {
+  const listeners = {};
+  const hiddenItem = { hidden: true, classList: { toggle() {} } };
+  const visibleItem = { hidden: false, classList: { toggle() {} } };
+  const label = { textContent: '查看全部' };
+  const button = {
+    attributes: { 'aria-expanded': 'false' },
+    getAttribute(name) {
+      return this.attributes[name];
+    },
+    setAttribute(name, value) {
+      this.attributes[name] = value;
+    },
+    addEventListener(type, listener) {
+      listeners[type] = listener;
+    },
+    querySelector() {
+      return label;
+    },
+  };
+  const list = {
+    querySelectorAll(selector) {
+      assert.equal(selector, '.is-hidden');
+      return [hiddenItem];
+    },
+    querySelector() {
+      return null;
+    },
+  };
+  const documentObject = {
+    querySelector(selector) {
+      return selector === '#aiNewsNavMore' ? button : list;
+    },
+  };
+
+  initAiNewsNav(documentObject, { innerWidth: 1280 });
+  listeners.click();
+
+  assert.equal(hiddenItem.hidden, false);
+  assert.equal(visibleItem.hidden, false);
+  assert.equal(button.attributes['aria-expanded'], 'true');
+});
+
+test('AI news navigation reveals the current hidden item on every viewport', () => {
+  const listeners = {};
+  const currentItem = {
+    hidden: true,
+    classList: {
+      contains(className) {
+        return className === 'is-hidden';
+      },
+      remove(className) {
+        assert.equal(className, 'is-hidden');
+      },
+    },
+  };
+  const currentLink = {
+    parentElement: currentItem,
+    scrollIntoView() {
+      throw new Error('desktop should not scroll the navigation');
+    },
+  };
+  const label = { textContent: '查看全部' };
+  const button = {
+    attributes: { 'aria-expanded': 'false' },
+    getAttribute(name) {
+      return this.attributes[name];
+    },
+    setAttribute(name, value) {
+      this.attributes[name] = value;
+    },
+    addEventListener(type, listener) {
+      listeners[type] = listener;
+    },
+    querySelector() {
+      return label;
+    },
+  };
+  const list = {
+    querySelectorAll() {
+      return [currentItem];
+    },
+    querySelector(selector) {
+      return selector === '[aria-current="page"]' ? currentLink : null;
+    },
+  };
+  const documentObject = {
+    querySelector(selector) {
+      return selector === '#aiNewsNavMore' ? button : list;
+    },
+  };
+
+  initAiNewsNav(documentObject, { innerWidth: 1280 });
+
+  assert.equal(currentItem.hidden, false);
+  assert.equal(button.attributes['aria-expanded'], 'false');
+  assert.equal(label.textContent, '查看全部');
+  assert.equal(typeof listeners.click, 'function');
+});
+
+test('mobile reveal then expand and collapse keeps the current item visible', () => {
+  const listeners = {};
+  const currentItem = {
+    hidden: true,
+    classList: {
+      contains(className) {
+        return className === 'is-hidden';
+      },
+      remove() {},
+      toggle(className, force) {
+        if (className === 'is-hidden') {
+          this.hiddenState = force;
+        }
+      },
+    },
+  };
+  const otherHiddenItem = {
+    hidden: true,
+    classList: {
+      toggle(className, force) {
+        if (className === 'is-hidden') {
+          this.hiddenState = force;
+        }
+      },
+    },
+  };
+  const currentLink = {
+    parentElement: currentItem,
+    scrollIntoView() {},
+  };
+  const label = { textContent: '查看全部' };
+  const button = {
+    attributes: { 'aria-expanded': 'false' },
+    getAttribute(name) {
+      return this.attributes[name];
+    },
+    setAttribute(name, value) {
+      this.attributes[name] = value;
+    },
+    addEventListener(type, listener) {
+      listeners[type] = listener;
+    },
+    querySelector() {
+      return label;
+    },
+  };
+  const list = {
+    querySelectorAll() {
+      return [currentItem, otherHiddenItem];
+    },
+    querySelector(selector) {
+      return selector === '[aria-current="page"]' ? currentLink : null;
+    },
+  };
+  const documentObject = {
+    querySelector(selector) {
+      return selector === '#aiNewsNavMore' ? button : list;
+    },
+  };
+
+  initAiNewsNav(documentObject, {
+    matchMedia() {
+      return { matches: true };
+    },
+  });
+
+  assert.equal(currentItem.hidden, false);
+  assert.equal(otherHiddenItem.hidden, false);
+  assert.equal(button.attributes['aria-expanded'], 'false');
+  assert.equal(label.textContent, '查看全部');
+
+  listeners.click();
+  assert.equal(button.attributes['aria-expanded'], 'true');
+  assert.equal(label.textContent, '收起');
+
+  listeners.click();
+  assert.equal(button.attributes['aria-expanded'], 'false');
+  assert.equal(label.textContent, '查看全部');
+  assert.equal(currentItem.hidden, false);
+  assert.equal(otherHiddenItem.hidden, true);
+});
+
+test('toggleExpanded reveals hidden items and updates the navigation button', () => {
+  const toggles = [];
+  const hiddenItems = [
+    {
+      hidden: true,
+      classList: {
+        toggle(className, force) {
+          toggles.push([className, force]);
+        },
+      },
+    },
+    {
+      hidden: true,
+      classList: {
+        toggle(className, force) {
+          toggles.push([className, force]);
+        },
+      },
+    },
+  ];
+  const label = { textContent: '更多' };
+  const button = {
+    attributes: { 'aria-expanded': 'false' },
+    getAttribute(name) {
+      return this.attributes[name];
+    },
+    setAttribute(name, value) {
+      this.attributes[name] = value;
+    },
+    querySelector(selector) {
+      return selector === 'span' ? label : null;
+    },
+  };
+
+  toggleExpanded(hiddenItems, button);
+
+  assert.equal(hiddenItems[0].hidden, false);
+  assert.equal(hiddenItems[1].hidden, false);
+  assert.equal(button.attributes['aria-expanded'], 'true');
+  assert.equal(label.textContent, '收起');
+  assert.deepEqual(toggles, [
+    ['is-hidden', false],
+    ['is-hidden', false],
+  ]);
+
+  toggleExpanded(hiddenItems, button);
+
+  assert.equal(hiddenItems[0].hidden, true);
+  assert.equal(hiddenItems[1].hidden, true);
+  assert.equal(button.attributes['aria-expanded'], 'false');
+  assert.equal(label.textContent, '查看全部');
+  assert.deepEqual(toggles, [
+    ['is-hidden', false],
+    ['is-hidden', false],
+    ['is-hidden', true],
+    ['is-hidden', true],
+  ]);
 });
 
 test('post reading surface wraps article chrome but excludes comments', () => {
