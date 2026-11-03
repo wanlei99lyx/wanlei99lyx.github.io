@@ -1,0 +1,35 @@
+/* === Container === */
+.container {
+  width: 100%;
+  max-width: var(--content-wide);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.container-narrow {
+  max-width: var(--content-max);
+}
+
+/* === Sections === */
+.section {
+  padding: var(--space-20) 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-10);
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.section-link {
+  font-size: 0.9375rem;
+  color: var(--color-accent);
+  font-weight: 500;
+}

@@ -2,11 +2,15 @@
 layout: default
 ---
 
+{% assign hero_categories = site.posts | map: "categories" | flatten | uniq %}
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="container">
     <div class="hero-content">
-      <p class="hero-label">{{ site.description }}</p>
+      <p class="hero-status">
+        <span class="hero-status-dot" aria-hidden="true"></span>
+        <span>{{ site.description }}</span>
+      </p>
       <h1 class="hero-title">
         <span class="gradient-text">{{ site.title }}</span>
       </h1>
@@ -24,9 +28,15 @@ layout: default
           关于我
         </a>
       </div>
+      <dl class="hero-readout">
+        <div><dt>文章</dt><dd>{{ site.posts.size }}</dd></div>
+        <div><dt>专题</dt><dd>{{ hero_categories.size }}</dd></div>
+        {% if site.posts.size > 0 %}
+        <div><dt>更新</dt><dd>{{ site.posts.first.date | date: "%m-%d" }}</dd></div>
+        {% endif %}
+      </dl>
     </div>
   </div>
-  <div class="hero-grid"></div>
 </div>
 
 <section class="section section-featured">

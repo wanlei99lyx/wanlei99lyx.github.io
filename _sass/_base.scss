@@ -1,0 +1,57 @@
+/* === Reset === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--color-bg);
+}
+
+body {
+  font-family: var(--font-body);
+  /* 16px floor. The old clamp bottomed out at 14px, which is under the
+     comfortable reading size for Chinese text. */
+  font-size: clamp(1rem, 0.5vw + 0.875rem, 1.0625rem);
+  line-height: 1.8;
+  color: var(--color-ink);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; }
+
+::selection {
+  background: oklch(0.60 0.16 265 / 0.35);
+  color: var(--color-ink);
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--color-accent); text-decoration: none; transition: color 150ms ease-out; }
+a:hover { color: var(--color-primary); }
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .post-reading-surface,
+  .reading-theme-thumb,
+  .ai-news-nav-link,
+  .ai-news-nav-more {
+    transition: none !important;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

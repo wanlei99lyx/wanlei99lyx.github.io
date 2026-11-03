@@ -84,17 +84,17 @@ permalink: /blog/
         {% for post in site.posts %}
           <article class="blog-card" data-url="{{ post.url }}" data-category="{% for cat in post.categories %}{{ cat | slugify }} {% endfor %}" data-tags="{% for tag in post.tags limit:4 %}{{ tag | slugify }} {% endfor %}">
             <a href="{{ post.url | relative_url }}" class="blog-card-link">
-              <div class="post-card-meta">
-                <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-              </div>
-              <h3 class="blog-card-title">{{ post.title }}</h3>
-              <p class="blog-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-              <div class="blog-card-footer">
+              <time class="blog-card-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+              <div class="blog-card-body">
+                <h3 class="blog-card-title">{{ post.title }}</h3>
+                <p class="blog-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
                 {% if post.tags.size > 0 %}
-                  <div class="post-card-tags">
-                    {% for tag in post.tags limit:3 %}
-                      <span class="tag tag-sm">#{{ tag }}</span>
-                    {% endfor %}
+                  <div class="blog-card-footer">
+                    <div class="post-card-tags">
+                      {% for tag in post.tags limit:3 %}
+                        <span class="tag tag-sm">#{{ tag }}</span>
+                      {% endfor %}
+                    </div>
                   </div>
                 {% endif %}
               </div>

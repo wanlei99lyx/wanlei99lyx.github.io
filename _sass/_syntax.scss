@@ -1,0 +1,44 @@
+/* === Syntax Highlighting (Rouge) === */
+.highlight { background: oklch(0.08 0.01 260); border-radius: 8px; }
+.highlight .c { color: var(--color-muted); font-style: italic; }
+.highlight .k { color: oklch(0.65 0.15 280); }
+.highlight .s { color: oklch(0.65 0.12 140); }
+.highlight .o { color: var(--color-accent); }
+.highlight .p { color: var(--color-ink-secondary); }
+.highlight .n { color: var(--color-ink); }
+.highlight .na { color: var(--color-accent); }
+.highlight .nb { color: var(--color-primary); }
+.highlight .nc { color: var(--color-primary); }
+.highlight .no { color: var(--color-primary); }
+.highlight .nd { color: var(--color-accent); }
+.highlight .ni { color: var(--color-ink); }
+.highlight .ne { color: var(--color-error); }
+.highlight .nf { color: var(--color-primary); }
+.highlight .nl { color: var(--color-ink); }
+.highlight .nn { color: var(--color-primary); }
+.highlight .nx { color: var(--color-ink); }
+.highlight .py { color: var(--color-ink); }
+.highlight .nt { color: var(--color-accent); }
+.highlight .nv { color: var(--color-ink); }
+.highlight .ow { color: var(--color-accent); }
+.highlight .w { color: var(--color-ink-secondary); }
+.highlight .mf { color: oklch(0.65 0.12 140); }
+.highlight .mh { color: oklch(0.65 0.12 140); }
+.highlight .mi { color: oklch(0.65 0.12 140); }
+.highlight .mo { color: oklch(0.65 0.12 140); }
+.highlight .sb { color: oklch(0.65 0.12 140); }
+.highlight .sc { color: oklch(0.65 0.12 140); }
+.highlight .sd { color: oklch(0.65 0.12 140); }
+.highlight .s2 { color: oklch(0.65 0.12 140); }
+.highlight .se { color: oklch(0.65 0.12 140); }
+.highlight .sh { color: oklch(0.65 0.12 140); }
+.highlight .si { color: oklch(0.65 0.12 140); }
+.highlight .sx { color: oklch(0.65 0.12 140); }
+.highlight .sr { color: oklch(0.65 0.12 140); }
+.highlight .s1 { color: oklch(0.65 0.12 140); }
+.highlight .ss { color: oklch(0.65 0.12 140); }
+.highlight .bp { color: var(--color-primary); }
+.highlight .vc { color: var(--color-ink); }
+.highlight .vg { color: var(--color-ink); }
+.highlight .vi { color: var(--color-ink); }
+.highlight .il { color: oklch(0.65 0.12 140); }
