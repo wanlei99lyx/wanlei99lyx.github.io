@@ -2,7 +2,17 @@
 layout: default
 ---
 
-{% assign hero_categories = site.posts | map: "categories" | flatten | uniq %}
+{%- comment -%}
+  Count topic series the same way blog.md builds its tabs: every category except
+  博客, which is an internal bucket the tab list already excludes via `unless`.
+{%- endcomment -%}
+{%- assign hero_categories = site.posts | map: "categories" | flatten | uniq -%}
+{%- assign hero_topic_count = 0 -%}
+{%- for hero_category in hero_categories -%}
+  {%- unless hero_category == "博客" -%}
+    {%- assign hero_topic_count = hero_topic_count | plus: 1 -%}
+  {%- endunless -%}
+{%- endfor -%}
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="container">
@@ -30,7 +40,7 @@ layout: default
       </div>
       <dl class="hero-readout">
         <div><dt>文章</dt><dd>{{ site.posts.size }}</dd></div>
-        <div><dt>专题</dt><dd>{{ hero_categories.size }}</dd></div>
+        <div><dt>专题</dt><dd>{{ hero_topic_count }}</dd></div>
         {% if site.posts.size > 0 %}
         <div><dt>更新</dt><dd>{{ site.posts.first.date | date: "%m-%d" }}</dd></div>
         {% endif %}
