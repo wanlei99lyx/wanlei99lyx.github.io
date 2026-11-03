@@ -217,6 +217,18 @@
       scrollbar-color: var(--color-border) transparent;
     }
 
+    /* .ai-news-nav-item carries min-width: 0 for the stacked layout, which in a
+       nowrap row let every chip shrink to its padding — measured 18px wide. The
+       strip needs fixed-width chips so it actually scrolls instead of crushing. */
+    .post-sidebar .ai-news-nav-list > .ai-news-nav-item {
+      flex: 0 0 auto;
+    }
+
+    .post-sidebar .ai-news-nav-link {
+      width: 15rem;
+      max-width: 78vw;
+    }
+
     .ai-news-nav-list::-webkit-scrollbar {
       height: 4px;
     }
@@ -300,12 +312,6 @@
 
   .reading-theme-label {
     width: 4rem;
-  }
-
-  html[data-reading-theme="light"] .post-reading-surface .post-content table {
-    display: block;
-    max-width: 100%;
-    overflow-x: auto;
   }
 
   html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a.active {

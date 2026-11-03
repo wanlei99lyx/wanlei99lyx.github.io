@@ -9,6 +9,9 @@
   --reading-secondary: var(--color-ink-secondary);
   --reading-muted: var(--color-muted);
   --reading-border: var(--color-border);
+  --reading-surface: var(--color-surface);
+  --reading-focus: var(--color-accent);
+  --reading-accent: var(--color-primary);
   color: var(--reading-ink);
   background: var(--reading-bg);
   transition: background-color 240ms ease-out, box-shadow 240ms ease-out,
@@ -78,21 +81,50 @@
   white-space: nowrap;
 }
 
+/* === Light reading theme ===
+
+   The dark page is pure black (achromatic). Anything with real chroma placed on
+   it stops reading as "the same surface, lit brighter" and starts reading as a
+   separate object. The previous paper was oklch(0.96 0.018 82): a warm cream at
+   ~0.36 RGB saturation — the only saturated hue on the whole screen, fighting
+   the brand's 258° page. That is the disharmony.
+
+   This inverts the same light source instead of switching materials: a
+   near-neutral paper carrying a whisper of the brand hue, so the card and the
+   black around it differ in *value* only. Accents are the brand colours
+   darkened until they clear AA against L=0.968.
+*/
 html[data-reading-theme="light"] .post-reading-surface {
-  --reading-bg: oklch(0.96 0.018 82 / 0.96);
-  --reading-ink: oklch(0.24 0.025 62);
-  --reading-secondary: oklch(0.40 0.028 62);
-  --reading-muted: oklch(0.52 0.028 65);
-  --reading-border: oklch(0.78 0.035 72);
-  --reading-focus: oklch(0.43 0.11 210);
-  --reading-focus-halo: oklch(0.43 0.11 210 / 0.2);
+  --reading-bg: oklch(0.968 0.004 258);
+  --reading-surface: oklch(0.944 0.005 258);
+  --reading-ink: oklch(0.21 0.018 258);
+  --reading-secondary: oklch(0.43 0.016 258);
+  --reading-muted: oklch(0.52 0.012 258);
+  --reading-border: oklch(0.885 0.007 258);
+  --reading-focus: oklch(0.47 0.115 200);
+  --reading-focus-halo: oklch(0.47 0.115 200 / 0.14);
+  --reading-accent: oklch(0.47 0.155 265);
   padding: clamp(var(--space-6), 4vw, var(--space-12));
   color: var(--reading-ink);
   background: var(--reading-bg);
   border: 1px solid var(--reading-border);
-  border-radius: 18px;
-  border-color: var(--reading-border);
-  box-shadow: 0 18px 50px oklch(0.04 0.01 60 / 0.22);
+  border-radius: var(--radius-lg);
+  /* A violet bloom with a tight neutral contact shadow. On black, a card needs
+     to look lit by the brand rather than pasted onto it; the old
+     brown-tinted drop shadow pushed the two hues further apart. */
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.45),
+    0 28px 80px -28px oklch(0.62 0.16 265 / 0.40);
+}
+
+/* The observatory dims when the paper comes out — the starfield and grain drop
+   back so the reading surface is the only lit thing on the page. */
+html[data-reading-theme="light"] #starField {
+  opacity: 0.22;
+}
+
+html[data-reading-theme="light"] .noise {
+  opacity: 0.012;
 }
 
 html[data-reading-theme="light"] .post-reading-surface .reading-theme-toggle:focus-visible {
@@ -102,6 +134,8 @@ html[data-reading-theme="light"] .post-reading-surface .reading-theme-toggle:foc
 
 html[data-reading-theme="light"] .post-reading-surface .reading-theme-thumb {
   transform: translateX(0.875rem);
+  /* brand cyan at 0.70 L was nearly invisible on paper — use the darkened variant */
+  background: var(--reading-focus);
 }
 
 html[data-reading-theme="light"] .post-reading-surface .post-title,
@@ -118,11 +152,16 @@ html[data-reading-theme="light"] .post-reading-surface .post-toc-title {
 html[data-reading-theme="light"] .post-reading-surface .post-tags .tag,
 html[data-reading-theme="light"] .post-reading-surface .post-content a,
 html[data-reading-theme="light"] .post-reading-surface .post-nav-link:hover {
-  color: oklch(0.43 0.11 210);
+  color: var(--reading-focus);
+}
+
+html[data-reading-theme="light"] .post-reading-surface .post-content a:hover,
+html[data-reading-theme="light"] .post-reading-surface .post-tags .tag:hover {
+  color: var(--reading-accent);
 }
 
 html[data-reading-theme="light"] .post-reading-surface .post-category {
-  color: oklch(0.43 0.11 210) !important;
+  color: var(--reading-focus) !important;
 }
 
 html[data-reading-theme="light"] .post-reading-surface .post-content h2,
@@ -143,12 +182,12 @@ html[data-reading-theme="light"] .post-reading-surface .post-content blockquote,
 html[data-reading-theme="light"] .post-reading-surface .post-content code,
 html[data-reading-theme="light"] .post-reading-surface .post-content th {
   color: var(--reading-secondary);
-  background: color-mix(in srgb, var(--reading-focus) 8%, var(--reading-bg));
+  background: var(--reading-surface);
   border-color: var(--reading-border);
 }
 
 html[data-reading-theme="light"] .post-reading-surface .post-content tr:nth-child(even) {
-  background: oklch(0.93 0.02 80);
+  background: var(--reading-surface);
 }
 
 html[data-reading-theme="light"] .post-reading-surface .post-content pre,
@@ -172,8 +211,8 @@ html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a:hover {
 }
 
 html[data-reading-theme="light"] .post-reading-surface .post-toc-nav a.active {
-  color: oklch(0.43 0.11 210);
-  border-left-color: var(--color-accent);
+  color: var(--reading-focus);
+  border-left-color: var(--reading-focus);
 }
 
 html[data-reading-theme="light"] .post-reading-surface .ai-news-nav {
@@ -196,7 +235,7 @@ html[data-reading-theme="light"] .post-reading-surface .ai-news-nav-link time {
 
 html[data-reading-theme="light"] .post-reading-surface .ai-news-nav-link:hover {
   color: var(--reading-ink);
-  background: color-mix(in srgb, var(--reading-focus) 8%, var(--reading-bg));
+  background: var(--reading-surface);
   border-color: var(--reading-border);
 }
 
@@ -217,7 +256,7 @@ html[data-reading-theme="light"] .post-reading-surface .ai-news-nav-more {
 
 html[data-reading-theme="light"] .post-reading-surface .ai-news-nav-more:hover {
   color: var(--reading-ink);
-  background: color-mix(in srgb, var(--reading-focus) 8%, var(--reading-bg));
+  background: var(--reading-surface);
   border-color: var(--reading-focus);
 }
 
@@ -396,6 +435,18 @@ html[data-reading-theme="light"] .post-reading-surface .ai-news-nav-more:hover {
 
 .post-content tr:nth-child(even) {
   background: oklch(0.08 0 0);
+}
+
+/* Long numeric cells can't wrap, so without its own scroller a wide table pushes
+   the whole document sideways on a phone. This used to live only inside the
+   light-theme block in _ai-news.scss, which left dark mode overflowing by ~19px
+   at a 390px viewport. */
+@media (max-width: 640px) {
+  .post-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 
 .post-content hr {

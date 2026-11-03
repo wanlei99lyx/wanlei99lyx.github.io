@@ -16,6 +16,9 @@
   inset: 0;
   z-index: -2;
   pointer-events: none;
+  /* Dimmed in light reading mode (see _post.scss) — the transition keeps the
+     switch from snapping. */
+  transition: opacity 260ms ease-out;
 }
 
 #earthCanvas {
